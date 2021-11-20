@@ -24,9 +24,9 @@ namespace async_await_Robot
             _Pen = new Pen(Color.WhiteSmoke, 3);
             _Brush = new SolidBrush(Color.WhiteSmoke);
 
-            _rtCircle_Robot = new Rectangle(50, 50, 100, 100);
-            _rtSquare_Arm = new Rectangle(40, 90, 80, 20);
-            _rtSquare_Object = new Rectangle(20, 80, 20, 40);
+            _rtCircle_Robot = new Rectangle(40, 25, 100, 100);
+            _rtSquare_Arm = new Rectangle(30, 65, 80, 20);
+            _rtSquare_Object = new Rectangle(10, 55, 20, 40);
 
         }
 
@@ -35,7 +35,7 @@ namespace async_await_Robot
             return _Pen;
         }
 
-        public SolidBrush fBruchInfo()
+        public SolidBrush fBrushInfo()
         {
             return _Brush;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -78,7 +79,7 @@ namespace async_await_Robot
         #region function
 
         /// <summary>
-        /// 초기 화면 표시. 그림이 틀어졌을 경우를 대비하여 만든 함수
+        /// 초기 화면 표시. 초기값들 / 그림그리는 함수를 호출
         /// </summary>
         private void fGenericsDraw()
         {
@@ -96,6 +97,7 @@ namespace async_await_Robot
 
             fDoor1Draw(0);
             fDoor2Draw(0);
+            fRobotDraw(0, 0, true);
 
         }
 
@@ -105,7 +107,7 @@ namespace async_await_Robot
         {
             pDoor1.Refresh();
 
-            _cDoor1.fMove(iMove);  
+            _cDoor1.fMove(iMove);  //Door1위치정보
 
             //pDoor1에 그림그리기!
             Graphics g = pDoor1.CreateGraphics();
@@ -119,7 +121,7 @@ namespace async_await_Robot
         {
             pDoor2.Refresh();
 
-            _cDoor2.fMove(iMove);  //위치정보 함수
+            _cDoor2.fMove(iMove);  //Door2위치정보
 
             //pDoor2에 그림그리기!
             Graphics g = pDoor2.CreateGraphics();
@@ -132,7 +134,39 @@ namespace async_await_Robot
         //pRobot에 그리기 함수
         private void fRobotDraw(int iRotate, int iRobot_Arm_Move, bool isObject)
         {
+            pRobot.Refresh();
 
+            _cRobot.fMove(iRobot_Arm_Move);   //팔 위치정보
+
+            //pRobot에 그림그리기!
+            Graphics g = pRobot.CreateGraphics();
+
+
+            g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);
+            g.FillEllipse(_cRobot.fBrushInfo(), _cRobot._rtCircle_Robot);  //몸통 그리기
+
+
+            Point center = new Point(100, 100);
+            g.Transform = GetMatrix(center, iRotate);
+
+
+
+            // Object가 있을 경우 표시 하고 없을 경우 표시 하지 않음
+            if (isObject)
+            {
+                g.FillRectangle(_cRobot.fBrushInfo(), _cRobot._rtSquare_Object);
+            }
+
+        }
+
+        // Robot 회전 시 사용 하는 함수 (실제 Robot이 회전하는게 아니고 Robot Arm을 Robot 중심 기준으로 회전 시킴)
+        private Matrix GetMatrix(Point centerPoint, float rotateAngle)
+        {
+            Matrix matrix = new Matrix();
+
+            matrix.RotateAt(rotateAngle, centerPoint);
+
+            return matrix;
         }
 
 
