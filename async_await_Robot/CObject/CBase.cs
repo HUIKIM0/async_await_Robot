@@ -13,7 +13,6 @@ namespace async_await_Robot       //.CObject (폴더명)삭제함
         protected Pen _Pen;
         protected SolidBrush _Brush;
 
-
         public CBase()
         {
             _Pen = new Pen(Color.Aqua);

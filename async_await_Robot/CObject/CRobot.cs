@@ -57,7 +57,8 @@ namespace async_await_Robot
 
 
             //Robot Object도 Arm과 함께 움직임(_rtDoor에서 물건을 꺼내올때만 보임. 보이고/안보이고)
-            oPoint = _rtSquare_Object.Location;   
+            //함께 움직이기 떄문에 따로 Point 생성 안해주고 같은거 사용
+            oPoint = _rtSquare_Object.Location;      
             oPoint.X = oPoint.X + iMove;
             _rtSquare_Object.Location = oPoint;
 

@@ -97,12 +97,13 @@ namespace async_await_Robot
 
             fDoor1Draw(0);
             fDoor2Draw(0);
-            fRobotDraw(0, 0, true);
+            fRobotDraw(0, 0, false);
 
         }
 
 
         //pDoor1에 그리기 함수
+        //
         private void fDoor1Draw(int iMove)
         {
             pDoor1.Refresh();
@@ -131,7 +132,8 @@ namespace async_await_Robot
         }
 
 
-        //pRobot에 그리기 함수
+        // pRobot에 그리기 함수
+        // 로봇 몸통(회전), 팔, 물건. 3가지 정보가 pRobot에 그려져야함
         private void fRobotDraw(int iRotate, int iRobot_Arm_Move, bool isObject)
         {
             pRobot.Refresh();
@@ -142,19 +144,19 @@ namespace async_await_Robot
             Graphics g = pRobot.CreateGraphics();
 
 
-            g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);
+            g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);    //팔 그리기
             g.FillEllipse(_cRobot.fBrushInfo(), _cRobot._rtCircle_Robot);  //몸통 그리기
 
 
-            Point center = new Point(100, 100);
+            // 팔 회전
+            Point center = new Point(100 , 100);
             g.Transform = GetMatrix(center, iRotate);
-
 
 
             // Object가 있을 경우 표시 하고 없을 경우 표시 하지 않음
             if (isObject)
             {
-                g.FillRectangle(_cRobot.fBrushInfo(), _cRobot._rtSquare_Object);
+                g.FillRectangle(_cRobot.fBrushInfo(), _cRobot._rtSquare_Object);  //물건 그리기
             }
 
         }
