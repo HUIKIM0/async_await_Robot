@@ -122,6 +122,8 @@ namespace async_await_Robot
             this.tboxDelay.Name = "tboxDelay";
             this.tboxDelay.Size = new System.Drawing.Size(57, 25);
             this.tboxDelay.TabIndex = 4;
+            this.tboxDelay.Text = "100";
+            this.tboxDelay.TextChanged += new System.EventHandler(this.tboxDelay_TextChanged);
             // 
             // label1
             // 

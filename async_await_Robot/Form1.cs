@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,6 +22,7 @@ namespace async_await_Robot
         int _iRobot_Rotate = 0;  // Robot Rotate 
         int _iSpeed = 100;  // Thread Sleep Time
         bool _bObjectExist = false;   // Robot이 Object를 가지고 있는지 여부
+
 
         #endregion
 
@@ -59,24 +61,40 @@ namespace async_await_Robot
                     break;
 
                 case "btnD1Open":
+                    Door1Open();
                     break;
                 case "btnD1Close":
+                    Door1Close();
                     break;
 
                 case "btnD2Open":
+                    Door2Open();
                     break;
                 case "btnD2Close":
+                    Door2Close();
                     break;
 
                 default:
                     break;
             }
 
-            Log(enLogLevel.Info_L1, $"BtnTest : {btn.Name}");
+            Log(enLogLevel.Info_L1, $"Button Name : {btn.Name}");
+            lboxLog.Items.Insert(0, "\r\n");
 
         }
 
-        #region function
+        //동작 Delay m/s. 지정해준 시간에 따라 문이 올라가는 속도
+        private void tboxDelay_TextChanged(object sender, EventArgs e)
+        {
+            if(int.TryParse(tboxDelay.Text, out int iRet))
+            {
+                _iSpeed = iRet;
+            }
+        }
+
+
+
+        #region function 
 
         /// <summary>
         /// 초기 화면 표시. 초기값들 / 그림그리는 함수를 호출
@@ -97,7 +115,7 @@ namespace async_await_Robot
 
             fDoor1Draw(0);
             fDoor2Draw(0);
-            fRobotDraw(0, 0, false);
+            fRobotDraw(_iRobot_Rotate, 0, false);
 
         }
 
@@ -174,6 +192,110 @@ namespace async_await_Robot
 
         #endregion
 
+
+
+        #region function
+
+        private void Door1Open()
+        {
+
+            int Door = _cDoor1._rtDoor.Bottom;  // 정해진 범위 이상 올라가지 않게 하기 위해
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (Door != 60)
+                {
+                    Thread.Sleep(_iSpeed);
+                    fDoor1Draw(-5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
+                }
+            }
+
+            if (Door == 60)
+            {
+                Log(enLogLevel.Info_L2, "The Door Is Already Open");
+                return;
+            }
+
+            Log(enLogLevel.Info_L1, "Door1 Open Complete");
+            Log(enLogLevel.Info_L1, "Door1 Open Start");
+        }
+
+
+        private void Door1Close()
+        {
+            int Door = _cDoor1._rtDoor.Y;    //정해진 범위 이상 내려가지 않게 하기 위해
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (Door != 45)
+                {
+                    Thread.Sleep(_iSpeed);
+                    fDoor1Draw(5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
+                }
+            }
+
+            if (Door == 45)
+            {
+                Log(enLogLevel.Info_L2, "The Door Is Already Closed");
+                return;
+            }
+
+            Log(enLogLevel.Info_L1, "Door1 Open Complete");
+            Log(enLogLevel.Info_L1, "Door1 Open Start");
+        }
+
+        private void Door2Open()
+        {
+            int Door = _cDoor2._rtDoor.Bottom;  // 정해진 범위 이상 올라가지 않게 하기 위해
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (Door != 60)
+                {
+                    Thread.Sleep(_iSpeed);
+                    fDoor2Draw(-5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
+                }
+            }
+
+            if (Door == 60)
+            {
+                Log(enLogLevel.Info_L2, "The Door Is Already Open");
+                return;
+            }
+
+            Log(enLogLevel.Info_L1, "Door1 Open Complete");
+            Log(enLogLevel.Info_L1, "Door1 Open Start");
+
+        }
+
+
+        private void Door2Close()
+        {
+            int Door = _cDoor2._rtDoor.Y;    //정해진 범위 이상 내려가지 않게 하기 위해
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (Door != 45)
+                {
+                    Thread.Sleep(_iSpeed);
+                    fDoor2Draw(5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
+                }
+            }
+
+            if (Door == 45)
+            {
+                Log(enLogLevel.Info_L2, "The Door Is Already Closed");
+                return;
+            }
+
+            Log(enLogLevel.Info_L1, "Door1 Open Complete");
+            Log(enLogLevel.Info_L1, "Door1 Open Start");
+        }
+
+        #endregion
+
+
+
         #region Log Viewer 
 
         // Log Level을 지정 할 Enum
@@ -197,6 +319,8 @@ namespace async_await_Robot
                 lboxLog.Items.Insert(0, LogInfo);
             }));
         }
+
+
 
         //사용자가 시간정보O 버전
         private void Log(DateTime dTime, enLogLevel eLevel, string LogDesc)
