@@ -74,6 +74,13 @@ namespace async_await_Robot
                     Door2Close();
                     break;
 
+                case "btnArmExtend":
+                    RobotArmExtend();
+                    break;
+                case "btnArmRetract":
+                    RobotArmRetract();
+                    break;
+
                 default:
                     break;
             }
@@ -291,6 +298,41 @@ namespace async_await_Robot
             Log(enLogLevel.Info_L1, "Door1 Open Complete");
             Log(enLogLevel.Info_L1, "Door1 Open Start");
         }
+
+        
+        private void RobotArmExtend()
+        {
+
+            for (int i = 0; i < 8; i++)
+            {
+                if(_cRobot._rtSquare_Arm.X != 0)
+                {
+                    Thread.Sleep(_iSpeed);
+                    fRobotDraw(_iRobot_Rotate, -5, _bObjectExist);
+                }
+               
+            }
+
+            Log(enLogLevel.Info_L1, "Robot Arm Extend Complete");
+            Log(enLogLevel.Info_L1, "Robot Arm Extend Start");
+        }
+
+        private void RobotArmRetract()
+        {
+
+            for (int i = 0; i < 8; i++)
+            {
+                if(_cRobot._rtSquare_Arm.X != 30)
+                {
+                    Thread.Sleep(_iSpeed);
+                    fRobotDraw(_iRobot_Rotate, 5, _bObjectExist);
+                }
+            }
+
+            Log(enLogLevel.Info_L1, "Robot Arm Retract Complete");
+            Log(enLogLevel.Info_L1, "Robot Arm Retract Start");
+        }
+
 
         #endregion
 
