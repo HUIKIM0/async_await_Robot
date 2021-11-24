@@ -54,6 +54,7 @@ namespace async_await_Robot
 
                 //동기 동작 진행
                 case "btnSynchronous":
+                    Start_Move();
                     break;
 
                 //비동기 동작 진행
@@ -134,29 +135,35 @@ namespace async_await_Robot
         //
         private void fDoor1Draw(int iMove)
         {
-            pDoor1.Refresh();
+            this.Invoke(new Action(delegate ()
+            {
+                pDoor1.Refresh();
 
-            _cDoor1.fMove(iMove);  //Door1위치정보
+                _cDoor1.fMove(iMove);  //Door1위치정보
 
-            //pDoor1에 그림그리기!
-            Graphics g = pDoor1.CreateGraphics();
+                //pDoor1에 그림그리기!
+                Graphics g = pDoor1.CreateGraphics();
 
-            g.DrawRectangle(_cDoor1.fPenInfo(), _cDoor1._rtDoorSide);  //테두리 그리기
-            g.FillRectangle(_cDoor1.fBruchInfo(), _cDoor1._rtDoor);    //채우기
+                g.DrawRectangle(_cDoor1.fPenInfo(), _cDoor1._rtDoorSide);  //테두리 그리기
+                g.FillRectangle(_cDoor1.fBruchInfo(), _cDoor1._rtDoor);    //채우기
+            }));
         }
 
         //pDoor2에 그리기 함수
         private void fDoor2Draw(int iMove)
         {
-            pDoor2.Refresh();
+            this.Invoke(new Action(delegate ()
+            {
+                pDoor2.Refresh();
 
-            _cDoor2.fMove(iMove);  //Door2위치정보
+                _cDoor2.fMove(iMove);  //Door2위치정보
 
-            //pDoor2에 그림그리기!
-            Graphics g = pDoor2.CreateGraphics();
+                //pDoor2에 그림그리기!
+                Graphics g = pDoor2.CreateGraphics();
 
-            g.DrawRectangle(_cDoor2.fPenInfo(), _cDoor2._rtDoorSide);  //테두리 그리기
-            g.FillRectangle(_cDoor2.fBruchInfo(), _cDoor2._rtDoor);    //채우기
+                g.DrawRectangle(_cDoor2.fPenInfo(), _cDoor2._rtDoorSide);  //테두리 그리기
+                g.FillRectangle(_cDoor2.fBruchInfo(), _cDoor2._rtDoor);    //채우기
+            }));
         }
 
 
@@ -165,27 +172,29 @@ namespace async_await_Robot
         // 몸통 -> 팔 -> 물건의 순서로 그려져야함
         private void fRobotDraw(int iRotate, int iRobot_Arm_Move, bool isObject)
         {
-            pRobot.Refresh();
-
-            //pRobot에 그림그리기!
-            Graphics g = pRobot.CreateGraphics();
-
-            g.FillEllipse(_cRobot.fBrushInfo(), _cRobot._rtCircle_Robot);  //몸통 그리기
-
-            _cRobot.fMove(iRobot_Arm_Move);   //팔 위치정보
-            // 팔 회전
-            Point center = new Point(85 , 75);
-            g.Transform = GetMatrix(center, iRotate);
-
-            g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);    //팔 그리기
-
-
-            // Object가 있을 경우 표시 하고 없을 경우 표시 하지 않음
-            if (isObject)
+            this.Invoke(new Action(delegate ()
             {
-                g.FillRectangle(_cRobot.fBrushInfo(), _cRobot._rtSquare_Object);  //물건 그리기
-            }
+                pRobot.Refresh();
 
+                //pRobot에 그림그리기!
+                Graphics g = pRobot.CreateGraphics();
+
+                g.FillEllipse(_cRobot.fBrushInfo(), _cRobot._rtCircle_Robot);  //몸통 그리기
+
+                _cRobot.fMove(iRobot_Arm_Move);   //팔 위치정보
+                                                  // 팔 회전
+                Point center = new Point(85, 75);
+                g.Transform = GetMatrix(center, iRotate);
+
+                g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);    //팔 그리기
+
+
+                // Object가 있을 경우 표시 하고 없을 경우 표시 하지 않음
+                if (isObject)
+                {
+                    g.FillRectangle(_cRobot.fBrushInfo(), _cRobot._rtSquare_Object);  //물건 그리기
+                }
+            }));
         }
 
         // Robot 회전 시 사용 하는 함수 (실제 Robot이 회전하는게 아니고 Robot Arm을 Robot 중심 기준으로 회전 시킴)
@@ -198,12 +207,41 @@ namespace async_await_Robot
             return matrix;
         }
 
-
         #endregion
 
 
+        #region Task
 
-        #region function
+        //동기 동작 진행 함수
+        private void Start_Move()
+        {
+            //동기 동작 버튼 누르고 아무것도 못 하니까 Task사용
+            Task.Run(() =>
+            {
+                Log(enLogLevel.Info_L2, "Move Sequence Start");
+
+                Door1Open();
+                RobotArmExtend();
+                _bObjectExist = true;
+                RobotArmRetract();
+                Door1Close();
+                RobotRotate();
+
+                Door2Open();
+                RobotArmExtend();
+                _bObjectExist = false;
+                RobotArmRetract();
+                Door2Close();
+                RobotRotate();
+
+                Log(enLogLevel.Info_L2, "Move Sequence Complete");
+            });
+        }
+
+        #endregion
+
+        
+        #region function 단위동작
 
         private void Door1Open()
         {
@@ -225,8 +263,9 @@ namespace async_await_Robot
                 return;
             }
 
-            Log(enLogLevel.Info_L1, "Door1 Open Complete");
             Log(enLogLevel.Info_L1, "Door1 Open Start");
+            Log(enLogLevel.Info_L1, "Door1 Open Complete");
+
         }
 
 
@@ -249,8 +288,9 @@ namespace async_await_Robot
                 return;
             }
 
-            Log(enLogLevel.Info_L1, "Door1 Open Complete");
             Log(enLogLevel.Info_L1, "Door1 Open Start");
+            Log(enLogLevel.Info_L1, "Door1 Open Complete");
+
         }
 
         private void Door2Open()
@@ -272,8 +312,9 @@ namespace async_await_Robot
                 return;
             }
 
-            Log(enLogLevel.Info_L1, "Door1 Open Complete");
-            Log(enLogLevel.Info_L1, "Door1 Open Start");
+            Log(enLogLevel.Info_L1, "Door2 Open Start");
+            Log(enLogLevel.Info_L1, "Door2 Open Complete");
+
 
         }
 
@@ -297,8 +338,9 @@ namespace async_await_Robot
                 return;
             }
 
-            Log(enLogLevel.Info_L1, "Door1 Open Complete");
-            Log(enLogLevel.Info_L1, "Door1 Open Start");
+            Log(enLogLevel.Info_L1, "Door2 Close Start");
+            Log(enLogLevel.Info_L1, "Door2 Close Complete");
+
         }
 
         
@@ -313,8 +355,9 @@ namespace async_await_Robot
                 }
             }
 
-            Log(enLogLevel.Info_L1, "Robot Arm Extend Complete");
             Log(enLogLevel.Info_L1, "Robot Arm Extend Start");
+            Log(enLogLevel.Info_L1, "Robot Arm Extend Complete");
+
         }
 
         private void RobotArmRetract()
@@ -328,8 +371,9 @@ namespace async_await_Robot
                 }
             }
 
-            Log(enLogLevel.Info_L1, "Robot Arm Retract Complete");
             Log(enLogLevel.Info_L1, "Robot Arm Retract Start");
+            Log(enLogLevel.Info_L1, "Robot Arm Retract Complete");
+
         }
 
         //180도 회전. 15도로
@@ -344,9 +388,9 @@ namespace async_await_Robot
             }
 
             if (_iRobot_Rotate > 360) _iRobot_Rotate -= 360;
-            Log(enLogLevel.Info_L1, "Robot Rotate Complete");
-            Log(enLogLevel.Info_L1, "Robot Rotate Start");
 
+            Log(enLogLevel.Info_L1, "Robot Rotate Start");
+            Log(enLogLevel.Info_L1, "Robot Rotate Complete");
         }
         #endregion
 
