@@ -80,6 +80,9 @@ namespace async_await_Robot
                 case "btnArmRetract":
                     RobotArmRetract();
                     break;
+                case "btnRobotRotate":
+                    RobotRotate();
+                    break;
 
                 default:
                     break;
@@ -90,7 +93,7 @@ namespace async_await_Robot
 
         }
 
-        //동작 Delay m/s. 지정해준 시간에 따라 문이 올라가는 속도
+        //동작 Delay m/s. 지정해준 시간에 따라 변경되는 속도
         private void tboxDelay_TextChanged(object sender, EventArgs e)
         {
             if(int.TryParse(tboxDelay.Text, out int iRet))
@@ -101,7 +104,7 @@ namespace async_await_Robot
 
 
 
-        #region function 
+        #region function Draw
 
         /// <summary>
         /// 초기 화면 표시. 초기값들 / 그림그리는 함수를 호출
@@ -159,23 +162,22 @@ namespace async_await_Robot
 
         // pRobot에 그리기 함수
         // 로봇 몸통(회전), 팔, 물건. 3가지 정보가 pRobot에 그려져야함
+        // 몸통 -> 팔 -> 물건의 순서로 그려져야함
         private void fRobotDraw(int iRotate, int iRobot_Arm_Move, bool isObject)
         {
             pRobot.Refresh();
 
-            _cRobot.fMove(iRobot_Arm_Move);   //팔 위치정보
-
             //pRobot에 그림그리기!
             Graphics g = pRobot.CreateGraphics();
 
-
-            g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);    //팔 그리기
             g.FillEllipse(_cRobot.fBrushInfo(), _cRobot._rtCircle_Robot);  //몸통 그리기
 
-
+            _cRobot.fMove(iRobot_Arm_Move);   //팔 위치정보
             // 팔 회전
-            Point center = new Point(100 , 100);
+            Point center = new Point(85 , 75);
             g.Transform = GetMatrix(center, iRotate);
+
+            g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);    //팔 그리기
 
 
             // Object가 있을 경우 표시 하고 없을 경우 표시 하지 않음
@@ -219,7 +221,7 @@ namespace async_await_Robot
 
             if (Door == 60)
             {
-                Log(enLogLevel.Info_L2, "The Door Is Already Open");
+                Log(enLogLevel.Warning, "The Door Is Already Open");
                 return;
             }
 
@@ -243,7 +245,7 @@ namespace async_await_Robot
 
             if (Door == 45)
             {
-                Log(enLogLevel.Info_L2, "The Door Is Already Closed");
+                Log(enLogLevel.Warning, "The Door Is Already Closed");
                 return;
             }
 
@@ -266,7 +268,7 @@ namespace async_await_Robot
 
             if (Door == 60)
             {
-                Log(enLogLevel.Info_L2, "The Door Is Already Open");
+                Log(enLogLevel.Warning, "The Door Is Already Open");
                 return;
             }
 
@@ -291,7 +293,7 @@ namespace async_await_Robot
 
             if (Door == 45)
             {
-                Log(enLogLevel.Info_L2, "The Door Is Already Closed");
+                Log(enLogLevel.Warning, "The Door Is Already Closed");
                 return;
             }
 
@@ -302,15 +304,13 @@ namespace async_await_Robot
         
         private void RobotArmExtend()
         {
-
             for (int i = 0; i < 8; i++)
             {
-                if(_cRobot._rtSquare_Arm.X != 0)
+                if(_cRobot._rtSquare_Arm.X != -5)
                 {
                     Thread.Sleep(_iSpeed);
                     fRobotDraw(_iRobot_Rotate, -5, _bObjectExist);
                 }
-               
             }
 
             Log(enLogLevel.Info_L1, "Robot Arm Extend Complete");
@@ -319,10 +319,9 @@ namespace async_await_Robot
 
         private void RobotArmRetract()
         {
-
             for (int i = 0; i < 8; i++)
             {
-                if(_cRobot._rtSquare_Arm.X != 30)
+                if(_cRobot._rtSquare_Arm.X != 25)
                 {
                     Thread.Sleep(_iSpeed);
                     fRobotDraw(_iRobot_Rotate, 5, _bObjectExist);
@@ -333,7 +332,22 @@ namespace async_await_Robot
             Log(enLogLevel.Info_L1, "Robot Arm Retract Start");
         }
 
+        //180도 회전. 15도로
+        private void RobotRotate()
+        {
+            for(int i=0; i<12; i++)       //12 * 15 = 180
+            {
+                Thread.Sleep(_iSpeed);
+                _iRobot_Rotate = _iRobot_Rotate + 15;
 
+                fRobotDraw(_iRobot_Rotate, 0, _bObjectExist);
+            }
+
+            if (_iRobot_Rotate > 360) _iRobot_Rotate -= 360;
+            Log(enLogLevel.Info_L1, "Robot Rotate Complete");
+            Log(enLogLevel.Info_L1, "Robot Rotate Start");
+
+        }
         #endregion
 
 

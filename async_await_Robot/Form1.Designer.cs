@@ -73,15 +73,15 @@ namespace async_await_Robot
             this.pRobot.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.pRobot.Location = new System.Drawing.Point(60, 24);
             this.pRobot.Name = "pRobot";
-            this.pRobot.Size = new System.Drawing.Size(189, 190);
+            this.pRobot.Size = new System.Drawing.Size(188, 190);
             this.pRobot.TabIndex = 2;
             // 
             // pDoor2
             // 
             this.pDoor2.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.pDoor2.Location = new System.Drawing.Point(255, 24);
+            this.pDoor2.Location = new System.Drawing.Point(250, 24);
             this.pDoor2.Name = "pDoor2";
-            this.pDoor2.Size = new System.Drawing.Size(47, 190);
+            this.pDoor2.Size = new System.Drawing.Size(50, 190);
             this.pDoor2.TabIndex = 1;
             // 
             // pDoor1
@@ -89,7 +89,7 @@ namespace async_await_Robot
             this.pDoor1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.pDoor1.Location = new System.Drawing.Point(7, 24);
             this.pDoor1.Name = "pDoor1";
-            this.pDoor1.Size = new System.Drawing.Size(47, 190);
+            this.pDoor1.Size = new System.Drawing.Size(50, 190);
             this.pDoor1.TabIndex = 0;
             // 
             // groupBox2
