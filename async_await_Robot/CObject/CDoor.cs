@@ -23,8 +23,8 @@ namespace async_await_Robot
             _Pen = new Pen(Color.WhiteSmoke, 3);            //펜 굵기
             _Brush = new SolidBrush(Color.WhiteSmoke);      //내부를 채울 색상
 
-            _rtDoorSide = new Rectangle(10, 45, 20, 65); 
-            _rtDoor = new Rectangle(10, 45, 20, 65);
+            _rtDoorSide = new Rectangle(10, 40, 20, 65); 
+            _rtDoor = new Rectangle(10, 40, 20, 65);
 
         }
 

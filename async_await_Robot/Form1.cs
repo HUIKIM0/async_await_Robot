@@ -238,6 +238,8 @@ namespace async_await_Robot
             });
         }
 
+        //비동기 동작 진행 함수
+
         #endregion
 
         
@@ -250,14 +252,14 @@ namespace async_await_Robot
 
             for (int i = 0; i < 10; i++)
             {
-                if (Door != 60)
+                if (Door != 55)  //Door이 105. -5씩 10번 감소되니까 50. 105 - 50 = 55(완전히 열렸을때)
                 {
                     Thread.Sleep(_iSpeed);
                     fDoor1Draw(-5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
                 }
             }
 
-            if (Door == 60)
+            if (Door == 55)
             {
                 Log(enLogLevel.Warning, "The Door Is Already Open");
                 return;
@@ -265,7 +267,6 @@ namespace async_await_Robot
 
             Log(enLogLevel.Info_L1, "Door1 Open Start");
             Log(enLogLevel.Info_L1, "Door1 Open Complete");
-
         }
 
 
@@ -275,14 +276,14 @@ namespace async_await_Robot
 
             for (int i = 0; i < 10; i++)
             {
-                if (Door != 45)
+                if (Door != 40)
                 {
                     Thread.Sleep(_iSpeed);
                     fDoor1Draw(5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
                 }
             }
 
-            if (Door == 45)
+            if (Door == 40)
             {
                 Log(enLogLevel.Warning, "The Door Is Already Closed");
                 return;
@@ -295,18 +296,18 @@ namespace async_await_Robot
 
         private void Door2Open()
         {
-            int Door = _cDoor2._rtDoor.Bottom;  // 정해진 범위 이상 올라가지 않게 하기 위해
+            int Door = _cDoor2._rtDoor.Bottom;  
 
             for (int i = 0; i < 10; i++)
             {
-                if (Door != 60)
+                if (Door != 55)
                 {
                     Thread.Sleep(_iSpeed);
                     fDoor2Draw(-5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
                 }
             }
 
-            if (Door == 60)
+            if (Door == 55)
             {
                 Log(enLogLevel.Warning, "The Door Is Already Open");
                 return;
@@ -321,18 +322,18 @@ namespace async_await_Robot
 
         private void Door2Close()
         {
-            int Door = _cDoor2._rtDoor.Y;    //정해진 범위 이상 내려가지 않게 하기 위해
+            int Door = _cDoor2._rtDoor.Y;    
 
             for (int i = 0; i < 10; i++)
             {
-                if (Door != 45)
+                if (Door != 40)
                 {
                     Thread.Sleep(_iSpeed);
-                    fDoor2Draw(5);   //Thread로 잠시 멈췄다가 y좌표 -5 그리기
+                    fDoor2Draw(5);  
                 }
             }
 
-            if (Door == 45)
+            if (Door == 40)
             {
                 Log(enLogLevel.Warning, "The Door Is Already Closed");
                 return;
