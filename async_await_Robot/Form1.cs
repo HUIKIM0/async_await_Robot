@@ -59,6 +59,7 @@ namespace async_await_Robot
 
                 //비동기 동작 진행
                 case "btnAsynchronous":
+                    Start_Move_Async();
                     break;
 
                 case "btnD1Open":
@@ -215,13 +216,14 @@ namespace async_await_Robot
         //동기 동작 진행 함수
         private void Start_Move()
         {
-            //동기 동작 버튼 누르고 아무것도 못 하니까 Task사용
+            //동기 동작 버튼 누르고 아무것도 못 하니까 Task사용. 전체에 Task
             Task.Run(() =>
             {
                 Log(enLogLevel.Info_L2, "Move Sequence Start");
 
                 Door1Open();
                 RobotArmExtend();
+                Thread.Sleep(500);     //잠시 멈춰야 밑의 true 작업이 먹힘
                 _bObjectExist = true;
                 RobotArmRetract();
                 Door1Close();
@@ -229,6 +231,7 @@ namespace async_await_Robot
 
                 Door2Open();
                 RobotArmExtend();
+                Thread.Sleep(500);
                 _bObjectExist = false;
                 RobotArmRetract();
                 Door2Close();
@@ -238,7 +241,39 @@ namespace async_await_Robot
             });
         }
 
-        //비동기 동작 진행 함수
+        //비동기 동작 진행 함수. 띄어쓰기로 구별해 놓은게 동시동작의 묶음임
+        // Task : 비동기함수
+        // await : 비동기 함수가 끝날 때 까지 잡아놓는 것. Task - await는 세트
+        // async : await를 위해서 async라는 한정자를 써야함
+
+        private async void Start_Move_Async()
+        {
+            Log(enLogLevel.Info_L2, "Move Sequence Start");
+
+            Task vTask;
+
+            vTask = Task.Run(() => RobotArmExtend());
+            await Task.Run(() => Door1Open());
+
+            Thread.Sleep(500);      // 문을 온전히 다 열게 + true작업
+            _bObjectExist = true;  // 팔을 뻗고 물건을 가지고 나오고
+            await Task.Run(() => RobotArmRetract());
+
+            vTask = Task.Run(() => Door1Close());
+            await Task.Run(() => RobotRotate());
+
+            vTask = Task.Run(() => RobotArmExtend());
+            await Task.Run(() => Door2Open());
+
+            Thread.Sleep(500);
+            _bObjectExist = false;  // 팔을 뻗고 물건을 두고 나오고
+            await Task.Run(() => RobotArmRetract());
+
+            vTask = Task.Run(() => Door2Close());
+            await Task.Run(() => RobotRotate());
+
+            Log(enLogLevel.Info_L2, "Move Sequence Complete");
+        }
 
         #endregion
 
@@ -267,6 +302,7 @@ namespace async_await_Robot
 
             Log(enLogLevel.Info_L1, "Door1 Open Start");
             Log(enLogLevel.Info_L1, "Door1 Open Complete");
+
         }
 
 
@@ -315,8 +351,6 @@ namespace async_await_Robot
 
             Log(enLogLevel.Info_L1, "Door2 Open Start");
             Log(enLogLevel.Info_L1, "Door2 Open Complete");
-
-
         }
 
 
@@ -341,7 +375,6 @@ namespace async_await_Robot
 
             Log(enLogLevel.Info_L1, "Door2 Close Start");
             Log(enLogLevel.Info_L1, "Door2 Close Complete");
-
         }
 
         
@@ -352,13 +385,13 @@ namespace async_await_Robot
                 if(_cRobot._rtSquare_Arm.X != -5)
                 {
                     Thread.Sleep(_iSpeed);
+
                     fRobotDraw(_iRobot_Rotate, -5, _bObjectExist);
                 }
             }
 
             Log(enLogLevel.Info_L1, "Robot Arm Extend Start");
             Log(enLogLevel.Info_L1, "Robot Arm Extend Complete");
-
         }
 
         private void RobotArmRetract()
@@ -368,13 +401,13 @@ namespace async_await_Robot
                 if(_cRobot._rtSquare_Arm.X != 25)
                 {
                     Thread.Sleep(_iSpeed);
+
                     fRobotDraw(_iRobot_Rotate, 5, _bObjectExist);
                 }
             }
 
             Log(enLogLevel.Info_L1, "Robot Arm Retract Start");
             Log(enLogLevel.Info_L1, "Robot Arm Retract Complete");
-
         }
 
         //180도 회전. 15도로
