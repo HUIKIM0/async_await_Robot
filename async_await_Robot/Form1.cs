@@ -223,7 +223,7 @@ namespace async_await_Robot
 
                 Door1Open();
                 RobotArmExtend();
-                Thread.Sleep(500);     //잠시 멈춰야 밑의 true 작업이 먹힘
+                Thread.Sleep(500);     
                 _bObjectExist = true;
                 RobotArmRetract();
                 Door1Close();
@@ -252,12 +252,12 @@ namespace async_await_Robot
 
             Task vTask;
 
-            vTask = Task.Run(() => RobotArmExtend());
-            await Task.Run(() => Door1Open());
+            vTask = Task.Run(() => RobotArmExtend());   //팔을 뻗으면서
+            await Task.Run(() => Door1Open());      //문을 열기. await->동작이 끝날 때 까지 다음 동작을 수행하지 않겠다
 
-            Thread.Sleep(500);      // 문을 온전히 다 열게 + true작업
-            _bObjectExist = true;  // 팔을 뻗고 물건을 가지고 나오고
-            await Task.Run(() => RobotArmRetract());
+            Thread.Sleep(500);     
+            _bObjectExist = true;  // 물건을 가지고 나오게
+            await Task.Run(() => RobotArmRetract());  //팔을 접으면서 물건을 가지고 나옴
 
             vTask = Task.Run(() => Door1Close());
             await Task.Run(() => RobotRotate());
@@ -266,7 +266,7 @@ namespace async_await_Robot
             await Task.Run(() => Door2Open());
 
             Thread.Sleep(500);
-            _bObjectExist = false;  // 팔을 뻗고 물건을 두고 나오고
+            _bObjectExist = false;  
             await Task.Run(() => RobotArmRetract());
 
             vTask = Task.Run(() => Door2Close());
@@ -279,7 +279,6 @@ namespace async_await_Robot
 
         
         #region function 단위동작
-
         private void Door1Open()
         {
 
@@ -431,7 +430,6 @@ namespace async_await_Robot
 
 
         #region Log Viewer 
-
         // Log Level을 지정 할 Enum
         enum enLogLevel
         {
