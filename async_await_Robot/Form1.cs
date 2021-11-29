@@ -23,7 +23,6 @@ namespace async_await_Robot
         int _iSpeed = 100;  // Thread Sleep Time
         bool _bObjectExist = false;   // Robot이 Object를 가지고 있는지 여부
 
-
         #endregion
 
 
@@ -102,6 +101,8 @@ namespace async_await_Robot
             {
                 _iSpeed = iRet;
             }
+
+            //_iSpeed = int.Parse(tboxDelay.Text);
         }
 
 
@@ -133,20 +134,19 @@ namespace async_await_Robot
 
 
         //pDoor1에 그리기 함수
-        //
         private void fDoor1Draw(int iMove)
         {
             this.Invoke(new Action(delegate ()
             {
                 pDoor1.Refresh();
 
-                _cDoor1.fMove(iMove);  //Door1위치정보
+                _cDoor1.fMove(iMove);  //Door1 Y 움직일 위치정보
 
-                //pDoor1에 그림그리기!
+                //pDoor1에 그림그리기 시작
                 Graphics g = pDoor1.CreateGraphics();
 
-                g.DrawRectangle(_cDoor1.fPenInfo(), _cDoor1._rtDoorSide);  //테두리 그리기
-                g.FillRectangle(_cDoor1.fBruchInfo(), _cDoor1._rtDoor);    //채우기
+                g.DrawRectangle(_cDoor1.fPenInfo(), _cDoor1._rtDoorSide);  //테두리 사각형 그리기
+                g.FillRectangle(_cDoor1.fBruchInfo(), _cDoor1._rtDoor);    //채워진 사각형
             }));
         }
 
@@ -157,19 +157,19 @@ namespace async_await_Robot
             {
                 pDoor2.Refresh();
 
-                _cDoor2.fMove(iMove);  //Door2위치정보
+                _cDoor2.fMove(iMove);  //Door2 Y 움직일 위치정보
 
-                //pDoor2에 그림그리기!
+                //pDoor2에 그림그리기 시작
                 Graphics g = pDoor2.CreateGraphics();
 
-                g.DrawRectangle(_cDoor2.fPenInfo(), _cDoor2._rtDoorSide);  //테두리 그리기
-                g.FillRectangle(_cDoor2.fBruchInfo(), _cDoor2._rtDoor);    //채우기
+                g.DrawRectangle(_cDoor2.fPenInfo(), _cDoor2._rtDoorSide);  
+                g.FillRectangle(_cDoor2.fBruchInfo(), _cDoor2._rtDoor);    
             }));
         }
 
 
         // pRobot에 그리기 함수
-        // 로봇 몸통(회전), 팔, 물건. 3가지 정보가 pRobot에 그려져야함
+        // 로봇 몸통(회전O), 팔, 물건. 3가지 정보가 pRobot에 그려져야함
         // 몸통 -> 팔 -> 물건의 순서로 그려져야함
         private void fRobotDraw(int iRotate, int iRobot_Arm_Move, bool isObject)
         {
@@ -177,20 +177,20 @@ namespace async_await_Robot
             {
                 pRobot.Refresh();
 
-                //pRobot에 그림그리기!
+                //pRobot에 그림그리기 시작
                 Graphics g = pRobot.CreateGraphics();
 
                 g.FillEllipse(_cRobot.fBrushInfo(), _cRobot._rtCircle_Robot);  //몸통 그리기
 
-                _cRobot.fMove(iRobot_Arm_Move);   //팔 위치정보
-                                                  // 팔 회전
+                _cRobot.fMove(iRobot_Arm_Move);   //팔 X 움직일 위치정보
+                                                  
                 Point center = new Point(85, 75);
-                g.Transform = GetMatrix(center, iRotate);
+                g.Transform = GetMatrix(center, iRotate);  // 팔 회전(위치,회전각)
 
                 g.DrawRectangle(_cRobot.fPenInfo(), _cRobot._rtSquare_Arm);    //팔 그리기
 
 
-                // Object가 있을 경우 표시 하고 없을 경우 표시 하지 않음
+                // Object가 있을 경우(true) 물건 그리기. 없으면 패스
                 if (isObject)
                 {
                     g.FillRectangle(_cRobot.fBrushInfo(), _cRobot._rtSquare_Object);  //물건 그리기
@@ -279,9 +279,10 @@ namespace async_await_Robot
 
         
         #region function 단위동작
+        // 모든 함수들은 Draw함수를 호출. 제대로 값을 줘서 작동하기 위함이다
+
         private void Door1Open()
         {
-
             int Door = _cDoor1._rtDoor.Bottom;  // 정해진 범위 이상 올라가지 않게 하기 위해
 
             for (int i = 0; i < 10; i++)
@@ -384,7 +385,6 @@ namespace async_await_Robot
                 if(_cRobot._rtSquare_Arm.X != -5)
                 {
                     Thread.Sleep(_iSpeed);
-
                     fRobotDraw(_iRobot_Rotate, -5, _bObjectExist);
                 }
             }
@@ -409,13 +409,13 @@ namespace async_await_Robot
             Log(enLogLevel.Info_L1, "Robot Arm Retract Complete");
         }
 
-        //180도 회전. 15도로
+        //180도 회전. 12번 15도로 
         private void RobotRotate()
         {
             for(int i=0; i<12; i++)       //12 * 15 = 180
             {
                 Thread.Sleep(_iSpeed);
-                _iRobot_Rotate = _iRobot_Rotate + 15;
+                _iRobot_Rotate = _iRobot_Rotate + 15;  
 
                 fRobotDraw(_iRobot_Rotate, 0, _bObjectExist);
             }
@@ -451,7 +451,6 @@ namespace async_await_Robot
                 lboxLog.Items.Insert(0, LogInfo);
             }));
         }
-
 
 
         //사용자가 시간정보O 버전
