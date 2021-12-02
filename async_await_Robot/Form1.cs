@@ -16,8 +16,8 @@ namespace async_await_Robot
     {
         #region 전역
 
-        CRobot _cRobot;           //class CRobot 선언
-        CDoor _cDoor1, _cDoor2;    //class CDoor 선언
+        CRobot _cRobot;           //class CRobot
+        CDoor _cDoor1, _cDoor2;    //class CDoor 
 
         int _iRobot_Rotate = 0;  // Robot Rotate 
         int _iSpeed = 100;  // Thread Sleep Time
@@ -277,10 +277,11 @@ namespace async_await_Robot
 
         #endregion
 
-        
-        #region function 단위동작
-        // 모든 함수들은 Draw함수를 호출. 제대로 값을 줘서 작동하기 위함이다
 
+        #region function 단위동작
+        /// <summary>
+        /// 모든 함수들은 Draw함수를 호출. 제대로 값을 줘서 작동(그림)하기 위한 함수들
+        /// </summary>
         private void Door1Open()
         {
             int Door = _cDoor1._rtDoor.Bottom;  // 정해진 범위 이상 올라가지 않게 하기 위해
