@@ -145,8 +145,8 @@ namespace async_await_Robot
                 //pDoor1에 그림그리기 시작
                 Graphics g = pDoor1.CreateGraphics();
 
-                g.DrawRectangle(_cDoor1.fPenInfo(), _cDoor1._rtDoorSide);  //테두리 사각형 그리기
-                g.FillRectangle(_cDoor1.fBruchInfo(), _cDoor1._rtDoor);    //채워진 사각형
+                g.DrawRectangle(_cDoor1.fPenInfo(), _cDoor1._rtDoorSide);  //테두리 선 사각형 그리기 Pen
+                g.FillRectangle(_cDoor1.fBruchInfo(), _cDoor1._rtDoor);    //채워진 사각형 SolidBrush
             }));
         }
 
@@ -213,7 +213,7 @@ namespace async_await_Robot
 
         #region Task
 
-        //동기 동작 진행 함수
+        //동기 동작 진행 함수. 한 동작이 다 끝나야 다음동작
         private void Start_Move()
         {
             //동기 동작 버튼 누르고 아무것도 못 하니까 Task사용. 전체에 Task
@@ -241,7 +241,7 @@ namespace async_await_Robot
             });
         }
 
-        //비동기 동작 진행 함수. 띄어쓰기로 구별해 놓은게 동시동작의 묶음임
+        //비동기 동작 진행 함수. 띄어쓰기로 구분해 놓은게 동시동작의 묶음임
         // Task : 비동기함수
         // await : 비동기 함수가 끝날 때 까지 잡아놓는 것. Task - await는 세트
         // async : await를 위해서 async라는 한정자를 써야함
@@ -281,6 +281,7 @@ namespace async_await_Robot
         #region function 단위동작
         /// <summary>
         /// 모든 함수들은 Draw함수를 호출. 제대로 값을 줘서 작동(그림)하기 위한 함수들
+        /// for문 만큼 그림그리기 반복 호출해서 자연스럽게 움직이는걸로 보이게 한다
         /// </summary>
         private void Door1Open()
         {

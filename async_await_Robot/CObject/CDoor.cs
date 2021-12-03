@@ -20,12 +20,11 @@ namespace async_await_Robot
         public CDoor(string sName)   
         {
             strName = sName;
-            _Pen = new Pen(Color.WhiteSmoke, 3);            //펜 굵기
-            _Brush = new SolidBrush(Color.WhiteSmoke);      //내부를 채울 색상
+            _Pen = new Pen(Color.WhiteSmoke, 3);            //선 굵기
+            _Brush = new SolidBrush(Color.WhiteSmoke);      //그래픽도형(내부 채움) 색상
 
             _rtDoorSide = new Rectangle(10, 40, 20, 65); 
             _rtDoor = new Rectangle(10, 40, 20, 65);
-
         }
 
 

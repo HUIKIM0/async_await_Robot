@@ -61,8 +61,6 @@ namespace async_await_Robot
             oPoint = _rtSquare_Object.Location;      
             oPoint.X = oPoint.X + iMove;
             _rtSquare_Object.Location = oPoint;
-
-
         }
 
 
