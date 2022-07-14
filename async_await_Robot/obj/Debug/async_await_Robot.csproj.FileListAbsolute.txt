@@ -1,10 +1,10 @@
 D:\dev\C#Work\async_await_Robot\async_await_Robot\bin\Debug\async_await_Robot.exe.config
 D:\dev\C#Work\async_await_Robot\async_await_Robot\bin\Debug\async_await_Robot.exe
 D:\dev\C#Work\async_await_Robot\async_await_Robot\bin\Debug\async_await_Robot.pdb
-D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.csprojAssemblyReference.cache
 D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.Form1.resources
 D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.Properties.Resources.resources
 D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.csproj.GenerateResource.cache
 D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.csproj.CoreCompileInputs.cache
 D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.exe
 D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.pdb
+D:\dev\C#Work\async_await_Robot\async_await_Robot\obj\Debug\async_await_Robot.csproj.AssemblyReference.cache
